@@ -127,6 +127,7 @@ class MainFragment : Fragment() {
                 task.etkinlikAdi = map.get("etkinlikAdi") as String?
                 task.organizator = map.get("organizator") as String?
                 task.adres = map.get("adres") as String?
+                task.tarih = map.get("tarih") as String?
                 task.etkinlikFoto = map.get("etkinlikFoto") as String?
                 task.etkinlikAciklama = map.get("etkinlikAciklama") as String?
                 eventList!!.add(task)
@@ -170,7 +171,7 @@ class MainFragment : Fragment() {
                 eventName.text = event.etkinlikAdi
                 eventOrganizator.text = event.organizator
                 eventAddress.text = event.adres
-             //   eventDate.text = event.date.eventDate
+                eventDate.text = event.tarih
 
                 Glide.with(itemView)
                     .load(event.etkinlikFoto)
