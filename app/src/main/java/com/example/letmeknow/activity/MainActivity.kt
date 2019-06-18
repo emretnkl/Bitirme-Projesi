@@ -2,11 +2,13 @@ package com.example.letmeknow.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.navigation.Navigation
 import com.example.letmeknow.R
+import com.example.letmeknow.datasnapshotconverter.DataSnapshotConverter
 import com.example.letmeknow.model.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -14,11 +16,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.auth.FirebaseUser
 
 
-
 class MainActivity : AppCompatActivity() {
 
-    private var auth: FirebaseAuth =FirebaseAuth.getInstance()
-
+    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,16 +32,16 @@ class MainActivity : AppCompatActivity() {
 
         val inflater = menuInflater
         inflater.inflate(R.menu.bottom_app_bar_item, menu)
-        val view =menu?.findItem(R.id.account_btn)
+        val view = menu?.findItem(R.id.account_btn)
         auth.currentUser?.let {
 
             view?.let {
-                view.isVisible=false
+                view.isVisible = false
             }
         }
-        if(auth.currentUser==null){
+        if (auth.currentUser == null) {
             view?.let {
-                view.isVisible=true
+                view.isVisible = true
             }
         }
 
@@ -54,18 +54,19 @@ class MainActivity : AppCompatActivity() {
 
             R.id.account_btn -> {
 
-                Navigation.findNavController(this,
-                        R.id.nav_host_fragment
-                    ).navigate(R.id.toSignIn)
+                Navigation.findNavController(
+                    this,
+                    R.id.nav_host_fragment
+                ).navigate(R.id.toSignIn)
 
             }
 
             R.id.search_btn -> {
-            //    Navigation.findNavController(this,
-              //          R.id.nav_host_fragment
+                //    Navigation.findNavController(this,
+                //          R.id.nav_host_fragment
                 //).navigate(R.id.toSearch)
                 FirebaseAuth.getInstance().signOut()
-                Toast.makeText(this,"Çıkış yapıldı.",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Çıkış yapıldı.", Toast.LENGTH_SHORT).show()
             }
         }
 

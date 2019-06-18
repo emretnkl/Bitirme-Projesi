@@ -8,29 +8,44 @@ import com.bumptech.glide.Glide
 
 import com.example.letmeknow.R
 import com.example.letmeknow.Retrofit
+import com.example.letmeknow.datasnapshotconverter.DataSnapshotConverter
+import com.example.letmeknow.model.CurrentUser
 import com.example.letmeknow.model.Event
 import com.example.letmeknow.model.Task
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_detail.*
 
 
 class DetailFragment : AppCompatActivity() {
 
     public var event: Task? = null
-
+    var mAuth = FirebaseAuth.getInstance()
+    var dataSnapshotConverter = DataSnapshotConverter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_detail)
 
 
-       val bundle = intent.extras
+        val bundle = intent.extras
         val event: Task = bundle.getSerializable("Event") as Task
 
-       //detail_date.text = event.date.eventDate
+        //detail_date.text = event.date.eventDate
         detail_descriptions.text = event!!.etkinlikAciklama
         detail_location.text = event!!.adres
         detail_title.text = event!!.etkinlikAdi
         detail_date.text = event!!.tarih
         Glide.with(this).load(event!!.etkinlikFoto).into(detail_imageView)
+
+
+        detail_katil.setOnClickListener {
+            event.objectId?.let {
+                dataSnapshotConverter.pushCurrentUserOnTheEtkinlikler(
+                    it,
+                    CurrentUser(mAuth.currentUser!!.email!!)
+                )
+            }
+        }
+
     }
 
 

@@ -20,6 +20,7 @@ import android.widget.TextView
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.example.letmeknow.R
+import com.example.letmeknow.datasnapshotconverter.DataSnapshotConverter
 import com.example.letmeknow.model.Task
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -96,46 +97,21 @@ class MainFragment : Fragment() {
     private fun loadTaskList(dataSnapshot: DataSnapshot) {
         Log.d("MainActivity", "loadTaskList")
 
+        DataSnapshotConverter().getEtkinlikler()
+            .doOnNext {
+                it?.let {
+                    Log.i("MyLogger",it.etkinlikAdi)
+                    eventList!!.add(it)
+                    eventsAdapter.notifyDataSetChanged()
+                }
+            }
+            .doOnError {
 
-
-
-        val tasks = dataSnapshot.children.iterator()
-
-
+            }
+            .subscribe()
 
         //Check if current database contains any collection
-        if (tasks.hasNext()) {
 
-            eventList.clear()
-
-
-            val listIndex = tasks.next()
-            val itemsIterator = listIndex.children.iterator()
-
-            //check if the collection has any task or not
-            while (itemsIterator.hasNext()) {
-
-                //get current task
-                val currentItem = itemsIterator.next()
-                val task = Task.create()
-
-                //get current data in a map
-                val map = currentItem.getValue() as HashMap<String, Any>
-
-                //key will return the Firebase ID
-                task.objectId = currentItem.key
-                task.etkinlikAdi = map.get("etkinlikAdi") as String?
-                task.organizator = map.get("organizator") as String?
-                task.adres = map.get("adres") as String?
-                task.tarih = map.get("tarih") as String?
-                task.etkinlikFoto = map.get("etkinlikFoto") as String?
-                task.etkinlikAciklama = map.get("etkinlikAciklama") as String?
-                eventList!!.add(task)
-            }
-        }
-
-        //alert adapter that has changed
-        eventsAdapter.notifyDataSetChanged()
 
     }
 
@@ -175,7 +151,7 @@ class MainFragment : Fragment() {
 
                 Glide.with(itemView)
                     .load(event.etkinlikFoto)
-                   // .placeholder(R.drawable.abc_btn_check_material)
+                    // .placeholder(R.drawable.abc_btn_check_material)
                     .into(eventImage)
 
                 itemView.setOnClickListener {

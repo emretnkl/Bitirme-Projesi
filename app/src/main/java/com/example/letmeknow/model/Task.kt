@@ -2,11 +2,10 @@ package com.example.letmeknow.model
 
 import java.io.Serializable
 
-class Task():Serializable{
+class Task() : Serializable {
     companion object Factory {
         fun create(): Task = Task()
     }
-
 
     var etkinlikAdi: String? = null
     var etkinlikFoto: String? = null
