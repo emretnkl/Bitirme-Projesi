@@ -66,7 +66,7 @@ class CreateEventFragment : Fragment() {
         val task = Task.create()
         task.etkinlikAdi = etkinlikAdiKayit.text.toString()
         task.etkinlikAciklama = etkinlikAciklamaKayit.text.toString()
-        task.etkinlikFoto = "https://blogmedia.evbstatic.com/wp-content/uploads/wpmulti/sites/8/2018/01/15155312/iStock-667709450.jpg"
+        task.etkinlikFoto = etkinlikFotoKayit.text.toString()
         task.adres = etkinlikAdresKayit.text.toString()
         task.tarih = etkinlikTarihKayit.text.toString()
 
